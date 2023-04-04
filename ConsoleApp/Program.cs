@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using HelperLibrary;
 using static HelperLibrary.Cash;
 using static HelperLibrary.Cash.CurrencyEnum;
@@ -15,7 +18,7 @@ namespace ConsoleApp
 
         private static void CountCash()
         {
-            var cashUSD = new Cash(USD,0, 0, 2, 12, 1, 3);
+            var cashUSD = new Cash(USD, 0, 0, 2, 12, 1, 3);
             var cashLBP = new Cash(LBP, 212, 1, 0, 0, 0, 0);
             Console.WriteLine($"cashUSD: {cashUSD}");
             Console.WriteLine($"cashLBP: {cashLBP}");
@@ -47,6 +50,40 @@ namespace ConsoleApp
 
         }
 
+            /*
+            var l = typeof(CurrencyEnum).GetEnumValues();
+            foreach (var obj in l)
+            {
+                Console.WriteLine(obj);
+            }
+            */
+
+
+            var t = typeof(CashLBPEnum).GetEnumValues();
+            Array.Reverse(t);
+            var s = t.Cast<int>().ToList();
+            
+            foreach (var i in s)
+            {
+                Console.WriteLine(i);
+            }
+
+            var q = typeof(CashLBPEnum).GetEnumNames().Reverse().ToList();
+            foreach (var w in q)
+            {
+                Console.WriteLine(w.Cast<int>());
+            }
+
+            //Array.Sort(u);
+            // Array.Reverse(u);
+            // foreach (var l in t)
+            // {
+            //     Console.WriteLine($"{(int)l} {l}");
+            // }
+            // foreach (var obj in typeof(CashLBPEnum).GetEnumValues())
+            // {
+            //     Console.WriteLine($"{obj} {((int)obj).GetType()} {obj.GetType()}");
+            // }
         private static bool CheckEnum(CashEnum cashEnum)
         {
             return (int)cashEnum == Convert.ToInt32(CashEnum.HundredThousand);

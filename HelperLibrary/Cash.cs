@@ -5,11 +5,21 @@ namespace HelperLibrary
 {
     public class Cash
     {
+        private readonly int[] _billsLBP = { 100_000, 50_000, 20_000, 10_000, 5_000, 1_000 };
+        private readonly int[] _billsUSD = { 100, 50, 20, 10, 5, 1 };
+        
         private const CurrencyEnum DefaultCurrency = LBP;
         private const string DefaultStrFormat = "{0,12:N0} {1,-3}";
 
         private double ExchangeRate { get; set; } = 1;
         private double Amount { get; set; }
+        // private decimal Amount => numericUpDown100.Value * decimal.Parse(button100.Text.Trim(',')) +
+        //                           numericUpDown50.Value * decimal.Parse(button50.Text.Trim(',')) +
+        //                           numericUpDown20.Value * decimal.Parse(button20.Text.Trim(',')) +
+        //                           numericUpDown10.Value * decimal.Parse(button10.Text.Trim(',')) +
+        //                           numericUpDown5.Value * decimal.Parse(button5.Text.Trim(',')) +
+        //                           numericUpDown1.Value * decimal.Parse(button1.Text.Trim(','));
+
         private double AmountToBase => Amount * ExchangeRate;
 
         private string Currency { get; set; } = DefaultCurrency.ToString();
@@ -86,7 +96,7 @@ namespace HelperLibrary
             return cash;
         }
 
-        private enum CashLBPEnum
+        public enum CashLBPEnum
         {
             HundredThousand = 100_000,
             FiftyThousand = 50_000,

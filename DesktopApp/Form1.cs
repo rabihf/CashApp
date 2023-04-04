@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Forms;
 using static HelperLibrary.Cash;
 using static HelperLibrary.Cash.CurrencyEnum;
@@ -33,7 +34,7 @@ namespace DesktopApp
             SetupAmountLabel();
             SetupCurrencyComboBox();
             SetupButtonsLabel();
-            USDRateTextBox.Text = 110_000.ToString();
+            USDRateTextBox.Text = $@"{DefaultUSDRate:N0}";
         }
 
         private void SetupButtonsLabel()
