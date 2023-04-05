@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using HelperLibrary;
 using static HelperLibrary.Cash;
@@ -12,7 +13,6 @@ namespace ConsoleApp
     {
         public static void Main(string[] args)
         {
-            
             CountCash();
         }
 
@@ -39,65 +39,29 @@ namespace ConsoleApp
             // Console.WriteLine($"test: {test}");
             // Console.WriteLine($"(int)test: {(int)test}");
 
-            int myInt = 100_000;
-            CashEnum cashEnum = (CashEnum)myInt;
-            Console.WriteLine($"myInt: {myInt} - cashEnum: {cashEnum}");
-            CashEnum foo = (CashEnum)Enum.ToObject(typeof(CashEnum) , myInt);
-            CashEnum foo2 = (CashEnum)Enum.Parse(typeof(CashEnum), 5_000.ToString());
-            Console.WriteLine($"foo: {foo}");
-            Console.WriteLine($"foo2: {(int)foo2:N0}");
+            // var myInt = 100_000;
+            // var cashEnum = (CashEnum)myInt;
+            // Console.WriteLine($"myInt: {myInt} - cashEnum: {cashEnum}");
+            // var foo = (CashEnum)Enum.ToObject(typeof(CashEnum), myInt);
+            // var foo2 = (CashEnum)Enum.Parse(typeof(CashEnum), 5_000.ToString());
+            // Console.WriteLine($"foo: {foo} - {(int)foo:N0}");
+            // Console.WriteLine($"foo2: {foo2} - {(int)foo2:N0}");
 
+
+            var listLBP = CreateEnumsList(typeof(CashLBPEnum), true);
+            var listUSD = CreateEnumsList(typeof(CashUSDEnum), true);
 
         }
 
-            /*
-            var l = typeof(CurrencyEnum).GetEnumValues();
-            foreach (var obj in l)
-            {
-                Console.WriteLine(obj);
-            }
-            */
-
-
-            var t = typeof(CashLBPEnum).GetEnumValues();
-            Array.Reverse(t);
-            var s = t.Cast<int>().ToList();
-            
-            foreach (var i in s)
-            {
-                Console.WriteLine(i);
-            }
-
-            var q = typeof(CashLBPEnum).GetEnumNames().Reverse().ToList();
-            foreach (var w in q)
-            {
-                Console.WriteLine(w.Cast<int>());
-            }
-
-            //Array.Sort(u);
-            // Array.Reverse(u);
-            // foreach (var l in t)
-            // {
-            //     Console.WriteLine($"{(int)l} {l}");
-            // }
-            // foreach (var obj in typeof(CashLBPEnum).GetEnumValues())
-            // {
-            //     Console.WriteLine($"{obj} {((int)obj).GetType()} {obj.GetType()}");
-            // }
-        private static bool CheckEnum(CashEnum cashEnum)
-        {
-            return (int)cashEnum == Convert.ToInt32(CashEnum.HundredThousand);
-        }
-        
-        private enum CashEnum : int
-        {
-            HundredThousand = 100_000,
-            FiftyThousand = 50_000,
-            TwentyThousand = 20_000,
-            TenThousand = 10_000,
-            FiveThousand = 5_000,
-            OneThousand = 1_000
-        }
+        // private enum CashEnum
+        // {
+        //     HundredThousand = 100_000,
+        //     FiftyThousand = 50_000,
+        //     TwentyThousand = 20_000,
+        //     TenThousand = 10_000,
+        //     FiveThousand = 5_000,
+        //     OneThousand = 1_000
+        // }
     }
     /*
      C# – How to cast int to enum

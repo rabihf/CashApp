@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Globalization;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using static HelperLibrary.Cash;
 using static HelperLibrary.Cash.CurrencyEnum;
@@ -8,8 +9,8 @@ namespace DesktopApp
 {
     public partial class Form1 : Form
     {
-        private readonly int[] _billsLBP = { 100_000, 50_000, 20_000, 10_000, 5_000, 1_000 };
-        private readonly int[] _billsUSD = { 100, 50, 20, 10, 5, 1 };
+        private readonly IEnumerable<int> _billsLBP = CreateEnumsList(typeof(CashLBPEnum), true);
+        private readonly IEnumerable<int> _billsUSD = CreateEnumsList(typeof(CashUSDEnum), true);
 
         private decimal Amount => numericUpDown100.Value * decimal.Parse(button100.Text.Trim(',')) +
                                   numericUpDown50.Value * decimal.Parse(button50.Text.Trim(',')) +
@@ -37,25 +38,27 @@ namespace DesktopApp
             USDRateTextBox.Text = $@"{DefaultUSDRate:N0}";
         }
 
+        private const decimal DefaultUSDRate = 110_000;
+
         private void SetupButtonsLabel()
         {
             switch (CurrencyComboBox.Text)
             {
                 case "LBP":
-                    button100.Text = $@"{_billsLBP[0]:N0}"; // $@"{USDRate:N0}"
-                    button50.Text  = $@"{_billsLBP[1]:N0}";
-                    button20.Text  = $@"{_billsLBP[2]:N0}";
-                    button10.Text  = $@"{_billsLBP[3]:N0}";
-                    button5.Text   = $@"{_billsLBP[4]:N0}";
-                    button1.Text   = $@"{_billsLBP[5]:N0}";
+                    button100.Text = $@"{_billsLBP.ElementAt(0):N0}"; // $@"{USDRate:N0}"
+                    button50.Text  = $@"{_billsLBP.ElementAt(1):N0}";
+                    button20.Text  = $@"{_billsLBP.ElementAt(2):N0}";
+                    button10.Text  = $@"{_billsLBP.ElementAt(3):N0}";
+                    button5.Text   = $@"{_billsLBP.ElementAt(4):N0}";
+                    button1.Text   = $@"{_billsLBP.ElementAt(5):N0}";
                     break;
                 case "USD":
-                    button100.Text =$@"{_billsUSD[0]:N0}";
-                    button50.Text  =$@"{_billsUSD[1]:N0}";
-                    button20.Text  =$@"{_billsUSD[2]:N0}";
-                    button10.Text  =$@"{_billsUSD[3]:N0}";
-                    button5.Text   =$@"{_billsUSD[4]:N0}";
-                    button1.Text   =$@"{_billsUSD[5]:N0}";
+                    button100.Text =$@"{_billsUSD.ElementAt(0):N0}";
+                    button50.Text  =$@"{_billsUSD.ElementAt(1):N0}";
+                    button20.Text  =$@"{_billsUSD.ElementAt(2):N0}";
+                    button10.Text  =$@"{_billsUSD.ElementAt(3):N0}";
+                    button5.Text   =$@"{_billsUSD.ElementAt(4):N0}";
+                    button1.Text   =$@"{_billsUSD.ElementAt(5):N0}";
                     break;
             }
         }

@@ -1,4 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using static HelperLibrary.Cash.CurrencyEnum;
 
 namespace HelperLibrary
@@ -106,7 +111,7 @@ namespace HelperLibrary
             OneThousand = 1_000
         }
 
-        private enum CashUSDEnum
+        public enum CashUSDEnum
         {
             Hundred = 100,
             Fifty = 50,
@@ -120,6 +125,58 @@ namespace HelperLibrary
         {
             [Description("USD")] USD = 110_000,
             [Description("LBP")] LBP = 1
+        }
+
+        /// <summary>
+        /// Creates a List of ints from an Enum 
+        /// </summary>
+        /// <param name="enumType"> Enum type</param>
+        /// <param name="reversed"> bool default=false ascending order</param>
+        /// <returns>List of int from the Enum type in ascending/descending order</returns>
+        public static IEnumerable<int> CreateEnumsList(Type enumType, bool reversed = false)
+        {
+            // Array of enums sorted ascending by int
+            const string titleSorted = "Array of enums sorted ascending by int";
+            var array = enumType.GetEnumValues();
+            DebugPrintEnumType(array, titleSorted, 15, 30);
+
+            if (reversed)
+            {
+                // Reverse the iEnumerable descending order
+                Array.Reverse(array);
+                const string titleReverse = "Reverse the Array descending order";
+                DebugPrintEnumType(array, titleReverse, 15, 30);
+            }
+
+            // Cast the Array to int
+            var sortedList = array.Cast<int>().ToList();
+            const string titleData = "Cast the Array to sorted List<int>";
+            DebugPrintEnumType(sortedList, titleData, 10, 12);
+
+            return sortedList;
+        }
+
+        /// <summary>
+        /// Helper function to debug information for CreateEnumsList function
+        /// </summary>
+        /// <param name="iEnumerable">IEnumerable (Array, List, ...)</param>
+        /// <param name="title">string: Title</param>
+        /// <param name="enumWidth">int: First column width</param>
+        /// <param name="typeWidth">int: Second column width</param>
+        private static void DebugPrintEnumType(IEnumerable iEnumerable, string title, int enumWidth = 0, int typeWidth = 0)
+        {
+            var tblStrFormat = "{0,-" + enumWidth + "} {1,-" + typeWidth + "}";
+            var tblIntFormat = "{0,-" + enumWidth + ":N0} {1,-" + typeWidth + "}";
+            var message = string.Format(tblStrFormat, "ENum", "Type");
+
+            Debug.WriteLine(title);
+            Debug.WriteLine(message);
+            Debug.WriteLine("-".PadLeft(message.Length, '-'));
+            foreach (var obj in iEnumerable)
+            {
+                Debug.WriteLine(obj is int ? tblIntFormat : tblStrFormat, obj, obj.GetType());
+            }
+            Debug.WriteLine("");
         }
     }
 }
