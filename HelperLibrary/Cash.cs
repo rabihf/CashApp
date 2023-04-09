@@ -10,98 +10,152 @@ namespace HelperLibrary
 {
     public class Cash
     {
-        private readonly int[] _billsLBP = { 100_000, 50_000, 20_000, 10_000, 5_000, 1_000 };
-        private readonly int[] _billsUSD = { 100, 50, 20, 10, 5, 1 };
-        
-        private const CurrencyEnum DefaultCurrency = LBP;
-        private const string DefaultStrFormat = "{0,12:N0} {1,-3}";
+        public readonly IEnumerable<int> BillsLBP = CreateEnumsList(typeof(CashLBPEnum), true);
+        public readonly IEnumerable<int> BillsUSD = CreateEnumsList(typeof(CashUSDEnum), true);
 
-        private double ExchangeRate { get; set; } = 1;
-        private double Amount { get; set; }
-        // private decimal Amount => numericUpDown100.Value * decimal.Parse(button100.Text.Trim(',')) +
-        //                           numericUpDown50.Value * decimal.Parse(button50.Text.Trim(',')) +
-        //                           numericUpDown20.Value * decimal.Parse(button20.Text.Trim(',')) +
-        //                           numericUpDown10.Value * decimal.Parse(button10.Text.Trim(',')) +
-        //                           numericUpDown5.Value * decimal.Parse(button5.Text.Trim(',')) +
-        //                           numericUpDown1.Value * decimal.Parse(button1.Text.Trim(','));
+        private CurrencyEnum CurrEnum { get; }
+        public const CurrencyEnum DefaultCurrency = LBP;
+        private decimal ExchangeRate => (decimal)CurrEnum;
 
-        private double AmountToBase => Amount * ExchangeRate;
+        public const string USDStrFormat = @"{0:N2}";
+        public const string LBPStrFormat = @"{0:N0}";
 
-        private string Currency { get; set; } = DefaultCurrency.ToString();
-        private string StrFormat { get; set; } = DefaultStrFormat;
 
-        public Cash(CurrencyEnum currency, int hundred, int fifty, int twenty, int ten, int five, int one)
+        private decimal Amount
         {
-            switch (currency)
+            get
             {
-                case USD:
-                    StrFormat = "{0,12:N2} {1,-3}";
-                    ExchangeRate = (double)currency;
-                    Currency = currency.ToString();
-                    Amount = hundred * (int)CashUSDEnum.Hundred +
-                             fifty * (int)CashUSDEnum.Fifty +
-                             twenty * (int)CashUSDEnum.Twenty +
-                             ten * (int)CashUSDEnum.Ten +
-                             five * (int)CashUSDEnum.Five +
-                             one * (int)CashUSDEnum.One;
-                    break;
-                case LBP:
-                    ExchangeRate = (double)currency;
-                    Amount = hundred * (int)CashLBPEnum.HundredThousand +
-                             fifty * (int)CashLBPEnum.FiftyThousand +
-                             twenty * (int)CashLBPEnum.TwentyThousand +
-                             ten * (int)CashLBPEnum.TenThousand +
-                             five * (int)CashLBPEnum.FiveThousand +
-                             one * (int)CashLBPEnum.OneThousand;
-                    break;
+                IEnumerable<int> billsUsed = CurrEnum == LBP ? BillsLBP.ToList() : BillsUSD.ToList();
+                decimal amt = QtyHundred * billsUsed.ElementAt(0) + QtyFifty * billsUsed.ElementAt(1) +
+                              QtyTwenty * billsUsed.ElementAt(2) + QtyTen * billsUsed.ElementAt(3) +
+                              QtyFive * billsUsed.ElementAt(4) + QtyOne * billsUsed.ElementAt(5);
+
+                return amt;
             }
         }
 
-        private Cash()
+        private int QtyHundred { get; set; }
+        private int QtyFifty { get; set; }
+        private int QtyTwenty { get; set; }
+        private int QtyTen { get; set; }
+        private int QtyFive { get; set; }
+        private int QtyOne { get; set; }
+
+        private string CurrencyStr => CurrEnum.ToString();
+        
+        private string StrFormat { get; set; } = "{0, -3}";
+
+        public Cash(CurrencyEnum currencyEnum, int qtyHundred, int qtyFifty, int qtyTwenty, int qtyTen, int qtyFive, int qtyOne)
         {
+            QtyHundred = qtyHundred;
+            QtyFifty = qtyFifty;
+            QtyTwenty = qtyTwenty;
+            QtyTen = qtyTen;
+            QtyFive = qtyFive;
+            QtyOne = qtyOne;
+            CurrEnum = currencyEnum;
+            // ExchangeRate = (decimal)currencyEnum;
+        }
+
+        public Cash()
+        {
+            CurrEnum = DefaultCurrency;
+        }
+
+        public Cash(CurrencyEnum currEnum, decimal amount)
+        {
+            CurrEnum = currEnum;
+            // ExchangeRate = (decimal)currEnum;
+            IEnumerable<int> bills = CurrEnum == LBP ? BillsLBP.ToList() : BillsUSD.ToList();
+            QtyHundred = (int)(amount / bills.ElementAt(0));
+            amount = (int)(amount % bills.ElementAt(0));
+            QtyFifty = (int)(amount / bills.ElementAt(1));
+            amount = (int)(amount % bills.ElementAt(1));
+            QtyTwenty = (int)(amount / bills.ElementAt(2));
+            amount = (int)(amount % bills.ElementAt(2));
+            QtyTen = (int)(amount / bills.ElementAt(3));
+            amount = (int)(amount % bills.ElementAt(3));
+            QtyFive = (int)(amount / bills.ElementAt(4));
+            amount = (int)(amount % bills.ElementAt(4));
+            QtyOne = (int)(amount / bills.ElementAt(5));
         }
 
         public override string ToString()
         {
-            return Currency == LBP.ToString()
-                ? string.Format(StrFormat, Amount, Currency)
-                : string.Format(StrFormat, Amount, Currency) + " ~ " +
-                  string.Format(DefaultStrFormat, Amount * ExchangeRate, DefaultCurrency);
+            // TODO: must beautify the output
+            Console.WriteLine($"Currency: {CurrencyStr}");
+            var headers = CurrEnum == LBP ? BillsLBP : BillsUSD;
+            var header = headers.Aggregate(string.Empty, (current, str) => current + ($"{str,6}" + " "));
+            Console.WriteLine(header);
+            Console.WriteLine("-".PadLeft(header.Length,'-'));
+            int[] dataArray = { QtyHundred, QtyFifty, QtyTwenty, QtyTen, QtyFive, QtyOne };
+            var data = dataArray.Aggregate(string.Empty, (current, str) => current + ($"{str, 6}" + " "));
+            Console.WriteLine(data);
+            var amount = Amount;
+            return CurrencyStr == LBP.ToString()
+                ? string.Format(LBPStrFormat, amount) + " " + string.Format(StrFormat, CurrencyStr)
+                : string.Format(USDStrFormat, amount) + " " + string.Format(StrFormat, CurrencyStr) + " ~ " +
+                  string.Format(LBPStrFormat, amount * ExchangeRate) + " " + string.Format(StrFormat, DefaultCurrency);
+        }
+
+        public static Cash operator +(Cash a, decimal b) // overloading
+        {
+            var cashB = new Cash(a.CurrEnum, b);
+            return cashB;
         }
 
         public static Cash operator +(Cash a, Cash b) // overloading
         {
-            var cash = new Cash();
-            if (a.Currency == b.Currency)
+            Cash cash;
+            if (a.CurrEnum == b.CurrEnum)
             {
-                cash.Currency = a.Currency;
-                cash.Amount = a.Amount + b.Amount;
-                cash.ExchangeRate = a.ExchangeRate;
+                Console.WriteLine("Same Currency");
+                cash = new Cash(a.CurrEnum,
+                    a.QtyHundred + b.QtyHundred,
+                    a.QtyFifty + b.QtyFifty,
+                    a.QtyTwenty + b.QtyTwenty,
+                    a.QtyTen + b.QtyTen,
+                    a.QtyFive + b.QtyFive,
+                    a.QtyOne + b.QtyOne);
             }
             else
             {
-                cash.Amount = a.AmountToBase * a.ExchangeRate + b.AmountToBase * b.ExchangeRate;
+                // TODO: Must figure out how to add different currencies
+                Console.WriteLine("Different Currency converted to base currency");
+                //cash.Amount = a.AmountToBase * a.ExchangeRate + b.AmountToBase * b.ExchangeRate;
+                cash = new Cash(DefaultCurrency,
+                    (int)(a.QtyHundred * a.ExchangeRate + b.QtyHundred * b.ExchangeRate),
+                    (int)(a.QtyFifty  * a.ExchangeRate+ b.QtyFifty * a.ExchangeRate),
+                    (int)(a.QtyTwenty * a.ExchangeRate + b.QtyTwenty * a.ExchangeRate),
+                    (int)(a.QtyTen  * a.ExchangeRate+ b.QtyTen * a.ExchangeRate),
+                    (int)(a.QtyFive * a.ExchangeRate + b.QtyFive * a.ExchangeRate),
+                    (int)(a.QtyOne * a.ExchangeRate + b.QtyOne * a.ExchangeRate));
             }
+
             return cash;
         }
 
         public static Cash operator -(Cash a, Cash b) // overloading
         {
             var cash = new Cash();
-            if (a.Currency == b.Currency)
+            if (a.CurrEnum == b.CurrEnum)
             {
-                cash.Currency = a.Currency;
-                cash.Amount = a.Amount - b.Amount;
-                cash.ExchangeRate = a.ExchangeRate;
+                // cash.CurrencyStr = a.CurrencyStr;
+                // cash.Amount = a.Amount - b.Amount;
+                // cash.ExchangeRate = a.ExchangeRate;
+                cash = new Cash(a.CurrEnum,
+                    a.QtyHundred - b.QtyHundred,
+                    a.QtyFifty - b.QtyFifty,
+                    a.QtyTwenty - b.QtyTwenty,
+                    a.QtyTen - b.QtyTen,
+                    a.QtyFive - b.QtyFive,
+                    a.QtyOne - b.QtyOne);
             }
-            else
-            {
-                cash.Amount = a.AmountToBase * a.ExchangeRate - b.AmountToBase * b.ExchangeRate;
-            }
+
             return cash;
         }
 
-        public enum CashLBPEnum
+        private enum CashLBPEnum
         {
             HundredThousand = 100_000,
             FiftyThousand = 50_000,
@@ -111,7 +165,7 @@ namespace HelperLibrary
             OneThousand = 1_000
         }
 
-        public enum CashUSDEnum
+        private enum CashUSDEnum
         {
             Hundred = 100,
             Fifty = 50,
@@ -133,7 +187,7 @@ namespace HelperLibrary
         /// <param name="enumType"> Enum type</param>
         /// <param name="reversed"> bool default=false ascending order</param>
         /// <returns>List of int from the Enum type in ascending/descending order</returns>
-        public static IEnumerable<int> CreateEnumsList(Type enumType, bool reversed = false)
+        private static IEnumerable<int> CreateEnumsList(Type enumType, bool reversed = false)
         {
             // Array of enums sorted ascending by int
             const string titleSorted = "Array of enums sorted ascending by int";
@@ -163,7 +217,8 @@ namespace HelperLibrary
         /// <param name="title">string: Title</param>
         /// <param name="enumWidth">int: First column width</param>
         /// <param name="typeWidth">int: Second column width</param>
-        private static void DebugPrintEnumType(IEnumerable iEnumerable, string title, int enumWidth = 0, int typeWidth = 0)
+        private static void DebugPrintEnumType(IEnumerable iEnumerable, string title, int enumWidth = 0,
+            int typeWidth = 0)
         {
             var tblStrFormat = "{0,-" + enumWidth + "} {1,-" + typeWidth + "}";
             var tblIntFormat = "{0,-" + enumWidth + ":N0} {1,-" + typeWidth + "}";
@@ -176,6 +231,7 @@ namespace HelperLibrary
             {
                 Debug.WriteLine(obj is int ? tblIntFormat : tblStrFormat, obj, obj.GetType());
             }
+
             Debug.WriteLine("");
         }
     }
