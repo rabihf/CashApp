@@ -3,17 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using static HelperLibrary.Cash.CurrencyEnum;
 
 namespace HelperLibrary
 {
+    public class Cashes : Cash
+    {
+        private readonly Dictionary<CurrencyEnum, Cash> _cashDict = new Dictionary<CurrencyEnum, Cash>();
+        public void Add(Cash cash)
+        {
+            if (_cashDict.ContainsKey(cash.CurrEnum))
+            {
+                _cashDict[cash.CurrEnum] += cash;
+            }
+            else
+            {
+                _cashDict[cash.CurrEnum] = cash;
+            }
+        }
+
+        public override string ToString()
+        {
+            var output = _cashDict.Aggregate(string.Empty, (current, keyValuePair) => current + keyValuePair.Value);
+            output += "\nTOTAL: ";
+            output += _cashDict.TryGetValue(LBP, out var cashLBP) ? $"{cashLBP.Amount:N0} LBP" : "0 LBP";
+            output += " - ";
+            output += _cashDict.TryGetValue(USD, out var cashUSD) ? $"{cashUSD.Amount:N2} USD" : "0.00 USD";
+            return output;
+        }
+    }
     public class Cash
     {
         public readonly IEnumerable<int> BillsLBP = CreateEnumsList(typeof(CashLBPEnum), true);
         public readonly IEnumerable<int> BillsUSD = CreateEnumsList(typeof(CashUSDEnum), true);
 
-        private CurrencyEnum CurrEnum { get; }
+        internal CurrencyEnum CurrEnum { get; }
         public const CurrencyEnum DefaultCurrency = LBP;
         private decimal ExchangeRate => (decimal)CurrEnum;
 
@@ -21,7 +47,7 @@ namespace HelperLibrary
         public const string LBPStrFormat = @"{0:N0}";
 
 
-        private decimal Amount
+        internal decimal Amount
         {
             get
             {
@@ -54,7 +80,6 @@ namespace HelperLibrary
             QtyFive = qtyFive;
             QtyOne = qtyOne;
             CurrEnum = currencyEnum;
-            // ExchangeRate = (decimal)currencyEnum;
         }
 
         public Cash()
@@ -83,60 +108,57 @@ namespace HelperLibrary
         public override string ToString()
         {
             // TODO: must beautify the output
-            Console.WriteLine($"Currency: {CurrencyStr}");
+            string output = string.Empty;
+            output += $"\nCurrency: {CurrencyStr} - ";
+            var amount = Amount;
+            output += CurrencyStr == LBP.ToString()
+                ? string.Format(LBPStrFormat, amount) + " " + string.Format(StrFormat, CurrencyStr) + "\n"
+                : string.Format(USDStrFormat, amount) + " " + string.Format(StrFormat, CurrencyStr) + " ~ " +
+                  string.Format(LBPStrFormat, amount * ExchangeRate) + " " + string.Format(StrFormat, DefaultCurrency) + "\n";
             var headers = CurrEnum == LBP ? BillsLBP : BillsUSD;
             var header = headers.Aggregate(string.Empty, (current, str) => current + ($"{str,6}" + " "));
-            Console.WriteLine(header);
-            Console.WriteLine("-".PadLeft(header.Length,'-'));
+            output += header + "\n";
+            output += "-".PadLeft(header.Length,'-') + "\n";
             int[] dataArray = { QtyHundred, QtyFifty, QtyTwenty, QtyTen, QtyFive, QtyOne };
             var data = dataArray.Aggregate(string.Empty, (current, str) => current + ($"{str, 6}" + " "));
-            Console.WriteLine(data);
-            var amount = Amount;
-            return CurrencyStr == LBP.ToString()
-                ? string.Format(LBPStrFormat, amount) + " " + string.Format(StrFormat, CurrencyStr)
-                : string.Format(USDStrFormat, amount) + " " + string.Format(StrFormat, CurrencyStr) + " ~ " +
-                  string.Format(LBPStrFormat, amount * ExchangeRate) + " " + string.Format(StrFormat, DefaultCurrency);
+            output += data + "\n";
+            
+            return output;
         }
 
-        public static Cash operator +(Cash a, decimal b) // overloading
+        public static Cashes operator +(Cash a, decimal b) // overloading
         {
-            var cashB = new Cash(a.CurrEnum, b);
-            return cashB;
+            return a + new Cash(a.CurrEnum, b);
         }
 
-        public static Cash operator +(Cash a, Cash b) // overloading
+        public static Cashes operator +(Cash a, Cash b) // overloading
         {
-            Cash cash;
+            var cashes = new Cashes();
             if (a.CurrEnum == b.CurrEnum)
             {
-                Console.WriteLine("Same Currency");
-                cash = new Cash(a.CurrEnum,
+                Console.WriteLine("Same Currency Adding bills");
+                var cash = new Cash(a.CurrEnum,
                     a.QtyHundred + b.QtyHundred,
                     a.QtyFifty + b.QtyFifty,
                     a.QtyTwenty + b.QtyTwenty,
                     a.QtyTen + b.QtyTen,
                     a.QtyFive + b.QtyFive,
                     a.QtyOne + b.QtyOne);
+                cashes.Add(cash);
             }
             else
             {
-                // TODO: Must figure out how to add different currencies
-                Console.WriteLine("Different Currency converted to base currency");
-                //cash.Amount = a.AmountToBase * a.ExchangeRate + b.AmountToBase * b.ExchangeRate;
-                cash = new Cash(DefaultCurrency,
-                    (int)(a.QtyHundred * a.ExchangeRate + b.QtyHundred * b.ExchangeRate),
-                    (int)(a.QtyFifty  * a.ExchangeRate+ b.QtyFifty * a.ExchangeRate),
-                    (int)(a.QtyTwenty * a.ExchangeRate + b.QtyTwenty * a.ExchangeRate),
-                    (int)(a.QtyTen  * a.ExchangeRate+ b.QtyTen * a.ExchangeRate),
-                    (int)(a.QtyFive * a.ExchangeRate + b.QtyFive * a.ExchangeRate),
-                    (int)(a.QtyOne * a.ExchangeRate + b.QtyOne * a.ExchangeRate));
+                Console.WriteLine("Different Currency");
+                cashes.Add(a);
+                cashes.Add(b);
             }
 
-            return cash;
+            return cashes;
         }
 
         public static Cash operator -(Cash a, Cash b) // overloading
         {
+            // TODO: Must solve the subtracting function
             var cash = new Cash();
             if (a.CurrEnum == b.CurrEnum)
             {

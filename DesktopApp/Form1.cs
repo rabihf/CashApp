@@ -121,13 +121,13 @@ namespace DesktopApp
         {
             if (CurrencyComboBox.Text != DefaultCurrency.ToString())
             {
-                AmountLabel.Text = string.Format(USDStrFormat, Amount) + CurrencyString;
+                AmountLabel.Text = string.Format(USDStrFormat, Amount) + @" " + CurrencyString;
                 AmountLabelEq.Visible = true;
-                AmountLabelEq.Text = string.Format(LBPStrFormat, Amount * USDRate) + DefaultCurrency;
+                AmountLabelEq.Text = string.Format(LBPStrFormat, Amount * USDRate) + @" " + DefaultCurrency;
             }
             else
             {
-                AmountLabel.Text = string.Format(LBPStrFormat, Amount) + CurrencyString;
+                AmountLabel.Text = string.Format(LBPStrFormat, Amount) + @" " + CurrencyString;
                 AmountLabelEq.Visible = false;
             }
         }
