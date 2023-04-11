@@ -12,6 +12,7 @@ namespace HelperLibrary
     public class Cashes : Cash
     {
         private readonly Dictionary<CurrencyEnum, Cash> _cashDict = new Dictionary<CurrencyEnum, Cash>();
+
         public void Add(Cash cash)
         {
             if (_cashDict.ContainsKey(cash.CurrEnum))
@@ -34,6 +35,7 @@ namespace HelperLibrary
             return output;
         }
     }
+
     public class Cash
     {
         public readonly IEnumerable<int> BillsLBP = CreateEnumsList(typeof(CashLBPEnum), true);
@@ -68,10 +70,11 @@ namespace HelperLibrary
         private int QtyOne { get; set; }
 
         private string CurrencyStr => CurrEnum.ToString();
-        
+
         private string StrFormat { get; set; } = "{0, -3}";
 
-        public Cash(CurrencyEnum currencyEnum, int qtyHundred, int qtyFifty, int qtyTwenty, int qtyTen, int qtyFive, int qtyOne)
+        public Cash(CurrencyEnum currencyEnum, int qtyHundred, int qtyFifty, int qtyTwenty, int qtyTen, int qtyFive,
+            int qtyOne)
         {
             QtyHundred = qtyHundred;
             QtyFifty = qtyFifty;
@@ -114,15 +117,16 @@ namespace HelperLibrary
             output += CurrencyStr == LBP.ToString()
                 ? string.Format(LBPStrFormat, amount) + " " + string.Format(StrFormat, CurrencyStr) + "\n"
                 : string.Format(USDStrFormat, amount) + " " + string.Format(StrFormat, CurrencyStr) + " ~ " +
-                  string.Format(LBPStrFormat, amount * ExchangeRate) + " " + string.Format(StrFormat, DefaultCurrency) + "\n";
+                  string.Format(LBPStrFormat, amount * ExchangeRate) + " " + string.Format(StrFormat, DefaultCurrency) +
+                  "\n";
             var headers = CurrEnum == LBP ? BillsLBP : BillsUSD;
             var header = headers.Aggregate(string.Empty, (current, str) => current + ($"{str,6}" + " "));
             output += header + "\n";
-            output += "-".PadLeft(header.Length,'-') + "\n";
+            output += "-".PadLeft(header.Length, '-') + "\n";
             int[] dataArray = { QtyHundred, QtyFifty, QtyTwenty, QtyTen, QtyFive, QtyOne };
-            var data = dataArray.Aggregate(string.Empty, (current, str) => current + ($"{str, 6}" + " "));
+            var data = dataArray.Aggregate(string.Empty, (current, str) => current + ($"{str,6}" + " "));
             output += data + "\n";
-            
+
             return output;
         }
 
@@ -152,29 +156,36 @@ namespace HelperLibrary
                 cashes.Add(a);
                 cashes.Add(b);
             }
-
             return cashes;
         }
 
-        public static Cash operator -(Cash a, Cash b) // overloading
+        public static Cashes operator -(Cash a, decimal b) // overloading
         {
-            // TODO: Must solve the subtracting function
-            var cash = new Cash();
+            return a - new Cash(a.CurrEnum, b);
+        }
+
+        public static Cashes operator -(Cash a, Cash b) // overloading
+        {
+            var cashes = new Cashes();
             if (a.CurrEnum == b.CurrEnum)
             {
-                // cash.CurrencyStr = a.CurrencyStr;
-                // cash.Amount = a.Amount - b.Amount;
-                // cash.ExchangeRate = a.ExchangeRate;
-                cash = new Cash(a.CurrEnum,
-                    a.QtyHundred - b.QtyHundred,
-                    a.QtyFifty - b.QtyFifty,
-                    a.QtyTwenty - b.QtyTwenty,
-                    a.QtyTen - b.QtyTen,
-                    a.QtyFive - b.QtyFive,
-                    a.QtyOne - b.QtyOne);
+                Console.WriteLine("Same Currency Subtracting bills");
+                var cash = a.Amount >= b.Amount
+                    ? new Cash(a.CurrEnum, a.Amount - b.Amount)
+                    : new Cash(a.CurrEnum, b.Amount - a.Amount);
+                cashes.Add(cash);
             }
-
-            return cash;
+            else
+            {
+                Console.WriteLine("Different Currency converting to base currency");
+                var cashAConverted = new Cash(LBP, a.Amount * a.ExchangeRate);
+                var cashBConverted = new Cash(LBP, b.Amount * b.ExchangeRate);
+                var newCash = cashAConverted.Amount >= cashBConverted.Amount
+                    ? new Cash(LBP, cashAConverted.Amount - cashBConverted.Amount)
+                    : new Cash(LBP, cashBConverted.Amount - cashAConverted.Amount);
+                cashes.Add(newCash);
+            }
+            return cashes;
         }
 
         private enum CashLBPEnum

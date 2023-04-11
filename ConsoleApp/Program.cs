@@ -20,16 +20,34 @@ namespace ConsoleApp
         {
             var cashUSD = new Cash(USD, 0, 0, 2, 12, 1, 3);
             var cashLBP = new Cash(LBP, 212, 1, 0, 0, 0, 0);
-            Console.WriteLine($"cashUSD: {cashUSD}\n");
-            // Console.WriteLine($"cashLBP: {cashLBP}\n");
+            // Console.WriteLine($"cashUSD: {cashUSD}\n");
+            Console.WriteLine($"cashLBP: {cashLBP}\n");
 
+            // Console.WriteLine($"{cashUSD - 132}");
+            // Console.WriteLine($"{cashUSD - new Cash(LBP,132000)}");
+            // Console.WriteLine($"{cashUSD - new Cash(LBP, 1, 0, 1, 1, 0, 2)}");
+            //
+            // Console.WriteLine($"{cashUSD - new Cash(USD,132)}");
+            // Console.WriteLine($"{cashUSD - new Cash(USD, 1, 0, 1, 1, 0, 2)}");
+
+
+            // Console.WriteLine($"{cashLBP - new Cash(LBP, 132000)}");
+            // Console.WriteLine($"{cashLBP - new Cash(LBP, 1, 0, 1, 1, 0, 2)}");
+            //
+            // Console.WriteLine($"{cashLBP - new Cash(USD, 132)}");
+            // Console.WriteLine($"{cashLBP - new Cash(USD, 1, 0, 1, 1, 0, 2)}");
+
+            
+            Console.WriteLine($"{cashLBP - 132000}");
+            Console.WriteLine($"{cashLBP + 132000}");
+            
+            Console.WriteLine($"{cashUSD - 132}");
             Console.WriteLine($"{cashUSD + 132}");
-            
-            
+
             // var payUSD = new Cash(USD, 1, 1, 1, 1, 1, 1);
-            
+
             // Console.WriteLine($"payUSD: {payUSD}\n");
-            
+
             // Console.WriteLine($"SUM: {cashLBP + payUSD}");
             // Console.WriteLine($"SUM: {cashUSD + payUSD}");
             // Console.WriteLine($"cashLBP + payUSD: {cashLBP + payUSD}");
@@ -45,7 +63,7 @@ namespace ConsoleApp
             // Console.WriteLine($"cashLBP + cash12540000: {cashLBP + cash8750000}");
             // Console.WriteLine($"cashUSD - payUSD: {cashUSD - payUSD}");
             // Console.WriteLine($"{cashLBP + 8750000M}");
-            
+
 
             Console.WriteLine();
         }
