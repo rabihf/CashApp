@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using HelperLibrary;
 using static HelperLibrary.Cash;
-using static HelperLibrary.Cash.CurrencyEnum;
+using static HelperLibrary.CurrencyEnum;
 
 namespace ConsoleApp
 {
@@ -21,49 +21,23 @@ namespace ConsoleApp
             var cashUSD = new Cash(USD, 0, 0, 2, 12, 1, 3);
             var cashLBP = new Cash(LBP, 212, 1, 0, 0, 0, 0);
             // Console.WriteLine($"cashUSD: {cashUSD}\n");
-            Console.WriteLine($"cashLBP: {cashLBP}\n");
+            // Console.WriteLine($"cashLBP: {cashLBP}\n");
+            var cashes = new Cashes();
+            Cashes.Add(cashLBP);
+            Cashes.Add(new Cash(LBP, 1750000));
+            Cashes.Add(cashUSD);
+            Cashes.Add(new Cash(USD, 32));
 
-            // Console.WriteLine($"{cashUSD - 132}");
-            // Console.WriteLine($"{cashUSD - new Cash(LBP,132000)}");
-            // Console.WriteLine($"{cashUSD - new Cash(LBP, 1, 0, 1, 1, 0, 2)}");
-            //
-            // Console.WriteLine($"{cashUSD - new Cash(USD,132)}");
-            // Console.WriteLine($"{cashUSD - new Cash(USD, 1, 0, 1, 1, 0, 2)}");
+            // Cashes.Add(cashUSD);
+            
+            // foreach (var currency in cashes.Currencies)
+            // {
+            //     Console.WriteLine($"{currency}: {currency.GetType()}");
+            // }
 
-
-            // Console.WriteLine($"{cashLBP - new Cash(LBP, 132000)}");
-            // Console.WriteLine($"{cashLBP - new Cash(LBP, 1, 0, 1, 1, 0, 2)}");
-            //
-            // Console.WriteLine($"{cashLBP - new Cash(USD, 132)}");
-            // Console.WriteLine($"{cashLBP - new Cash(USD, 1, 0, 1, 1, 0, 2)}");
+            Console.WriteLine(cashes);
 
             
-            Console.WriteLine($"{cashLBP - 132000}");
-            Console.WriteLine($"{cashLBP + 132000}");
-            
-            Console.WriteLine($"{cashUSD - 132}");
-            Console.WriteLine($"{cashUSD + 132}");
-
-            // var payUSD = new Cash(USD, 1, 1, 1, 1, 1, 1);
-
-            // Console.WriteLine($"payUSD: {payUSD}\n");
-
-            // Console.WriteLine($"SUM: {cashLBP + payUSD}");
-            // Console.WriteLine($"SUM: {cashUSD + payUSD}");
-            // Console.WriteLine($"cashLBP + payUSD: {cashLBP + payUSD}");
-            // Console.WriteLine($"cashLBP - payUSD: {cashLBP - payUSD}");
-            // Console.WriteLine($"cashUSD + payUSD: {cashUSD + payUSD}");
-
-            // var cash114 = new Cash(USD, 132);
-            // Console.WriteLine($"114USD: {cash114}");
-            // var cash8750000 = new Cash(LBP, 8750000);
-            // Console.WriteLine($"cash12540000: {cash12540000}");
-            //Console.WriteLine($"cashUSD + 114USD: {cashUSD + cash114}");
-            // Console.WriteLine(cashLBP);
-            // Console.WriteLine($"cashLBP + cash12540000: {cashLBP + cash8750000}");
-            // Console.WriteLine($"cashUSD - payUSD: {cashUSD - payUSD}");
-            // Console.WriteLine($"{cashLBP + 8750000M}");
-
 
             Console.WriteLine();
         }

@@ -3,39 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using static HelperLibrary.Cash.CurrencyEnum;
+using static HelperLibrary.CurrencyEnum;
 
 namespace HelperLibrary
 {
-    public class Cashes : Cash
-    {
-        private readonly Dictionary<CurrencyEnum, Cash> _cashDict = new Dictionary<CurrencyEnum, Cash>();
-
-        public void Add(Cash cash)
-        {
-            if (_cashDict.ContainsKey(cash.CurrEnum))
-            {
-                _cashDict[cash.CurrEnum] += cash;
-            }
-            else
-            {
-                _cashDict[cash.CurrEnum] = cash;
-            }
-        }
-
-        public override string ToString()
-        {
-            var output = _cashDict.Aggregate(string.Empty, (current, keyValuePair) => current + keyValuePair.Value);
-            output += "\nTOTAL: ";
-            output += _cashDict.TryGetValue(LBP, out var cashLBP) ? $"{cashLBP.Amount:N0} LBP" : "0 LBP";
-            output += " - ";
-            output += _cashDict.TryGetValue(USD, out var cashUSD) ? $"{cashUSD.Amount:N2} USD" : "0.00 USD";
-            return output;
-        }
-    }
-
     public class Cash
     {
         public readonly IEnumerable<int> BillsLBP = CreateEnumsList(typeof(CashLBPEnum), true);
@@ -49,7 +21,7 @@ namespace HelperLibrary
         public const string LBPStrFormat = @"{0:N0}";
 
 
-        internal decimal Amount
+        public decimal Amount
         {
             get
             {
@@ -62,12 +34,12 @@ namespace HelperLibrary
             }
         }
 
-        private int QtyHundred { get; set; }
-        private int QtyFifty { get; set; }
-        private int QtyTwenty { get; set; }
-        private int QtyTen { get; set; }
-        private int QtyFive { get; set; }
-        private int QtyOne { get; set; }
+        internal int QtyHundred { get; set; }
+        internal int QtyFifty { get; set; }
+        internal int QtyTwenty { get; set; }
+        internal int QtyTen { get; set; }
+        internal int QtyFive { get; set; }
+        internal int QtyOne { get; set; }
 
         private string CurrencyStr => CurrEnum.ToString();
 
@@ -107,6 +79,8 @@ namespace HelperLibrary
             amount = (int)(amount % bills.ElementAt(4));
             QtyOne = (int)(amount / bills.ElementAt(5));
         }
+
+        // private static Cashes Cashes { get; set; }
 
         public override string ToString()
         {
@@ -148,13 +122,13 @@ namespace HelperLibrary
                     a.QtyTen + b.QtyTen,
                     a.QtyFive + b.QtyFive,
                     a.QtyOne + b.QtyOne);
-                cashes.Add(cash);
+                Cashes.Add(cash);
             }
             else
             {
                 Console.WriteLine("Different Currency");
-                cashes.Add(a);
-                cashes.Add(b);
+                Cashes.Add(a);
+                Cashes.Add(b);
             }
             return cashes;
         }
@@ -173,7 +147,7 @@ namespace HelperLibrary
                 var cash = a.Amount >= b.Amount
                     ? new Cash(a.CurrEnum, a.Amount - b.Amount)
                     : new Cash(a.CurrEnum, b.Amount - a.Amount);
-                cashes.Add(cash);
+                Cashes.Add(cash);
             }
             else
             {
@@ -183,36 +157,14 @@ namespace HelperLibrary
                 var newCash = cashAConverted.Amount >= cashBConverted.Amount
                     ? new Cash(LBP, cashAConverted.Amount - cashBConverted.Amount)
                     : new Cash(LBP, cashBConverted.Amount - cashAConverted.Amount);
-                cashes.Add(newCash);
+                Cashes.Add(newCash);
             }
             return cashes;
         }
 
-        private enum CashLBPEnum
-        {
-            HundredThousand = 100_000,
-            FiftyThousand = 50_000,
-            TwentyThousand = 20_000,
-            TenThousand = 10_000,
-            FiveThousand = 5_000,
-            OneThousand = 1_000
-        }
+        
 
-        private enum CashUSDEnum
-        {
-            Hundred = 100,
-            Fifty = 50,
-            Twenty = 20,
-            Ten = 10,
-            Five = 5,
-            One = 1
-        }
 
-        public enum CurrencyEnum
-        {
-            [Description("USD")] USD = 110_000,
-            [Description("LBP")] LBP = 1
-        }
 
         /// <summary>
         /// Creates a List of ints from an Enum 
