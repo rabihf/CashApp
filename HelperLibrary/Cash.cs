@@ -55,11 +55,13 @@ namespace HelperLibrary
             QtyFive = qtyFive;
             QtyOne = qtyOne;
             CurrEnum = currencyEnum;
+            // CashesDict = new Cashes();
         }
 
         public Cash()
         {
             CurrEnum = DefaultCurrency;
+            // CashesDict = new Cashes();
         }
 
         public Cash(CurrencyEnum currEnum, decimal amount)
@@ -78,9 +80,10 @@ namespace HelperLibrary
             QtyFive = (int)(amount / bills.ElementAt(4));
             amount = (int)(amount % bills.ElementAt(4));
             QtyOne = (int)(amount / bills.ElementAt(5));
+            // CashesDict = new Cashes();
         }
 
-        // private static Cashes Cashes { get; set; }
+        // private static Cashes CashesDict { get; set; }
 
         public override string ToString()
         {
@@ -122,16 +125,27 @@ namespace HelperLibrary
                     a.QtyTen + b.QtyTen,
                     a.QtyFive + b.QtyFive,
                     a.QtyOne + b.QtyOne);
-                Cashes.Add(cash);
+                cashes.Add(cash);
             }
             else
             {
                 Console.WriteLine("Different Currency");
-                Cashes.Add(a);
-                Cashes.Add(b);
+                cashes.Add(a);
+                cashes.Add(b);
             }
             return cashes;
         }
+
+        // public void Add(Cash a, Cash b)
+        // {
+        //     var cash = new Cash(a.CurrEnum,
+        //         a.QtyHundred + b.QtyHundred,
+        //         a.QtyFifty + b.QtyFifty,
+        //         a.QtyTwenty + b.QtyTwenty,
+        //         a.QtyTen + b.QtyTen,
+        //         a.QtyFive + b.QtyFive,
+        //         a.QtyOne + b.QtyOne);
+        // }
 
         public static Cashes operator -(Cash a, decimal b) // overloading
         {
@@ -147,7 +161,7 @@ namespace HelperLibrary
                 var cash = a.Amount >= b.Amount
                     ? new Cash(a.CurrEnum, a.Amount - b.Amount)
                     : new Cash(a.CurrEnum, b.Amount - a.Amount);
-                Cashes.Add(cash);
+                cashes.Add(cash);
             }
             else
             {
@@ -157,7 +171,7 @@ namespace HelperLibrary
                 var newCash = cashAConverted.Amount >= cashBConverted.Amount
                     ? new Cash(LBP, cashAConverted.Amount - cashBConverted.Amount)
                     : new Cash(LBP, cashBConverted.Amount - cashAConverted.Amount);
-                Cashes.Add(newCash);
+                cashes.Add(newCash);
             }
             return cashes;
         }

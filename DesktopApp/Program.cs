@@ -17,7 +17,7 @@ namespace DesktopApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(new Cash()));
+            Application.Run(new Form1(new Cashes()));
         }
     }
 }

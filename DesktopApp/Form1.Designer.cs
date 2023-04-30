@@ -52,9 +52,9 @@
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.BtnReset = new System.Windows.Forms.Button();
-            this.BalanceLabelEq = new System.Windows.Forms.Label();
+            this.BalanceLabelUSD = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.BalanceLabel = new System.Windows.Forms.Label();
+            this.BalanceLabelLBP = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown100)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown50)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
@@ -301,37 +301,37 @@
             this.BtnReset.UseVisualStyleBackColor = true;
             this.BtnReset.Click += new System.EventHandler(this.BtnReset_Click);
             // 
-            // BalanceLabelEq
+            // BalanceLabelUSD
             // 
-            this.BalanceLabelEq.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BalanceLabelEq.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BalanceLabelEq.Location = new System.Drawing.Point(5, 52);
-            this.BalanceLabelEq.Name = "BalanceLabelEq";
-            this.BalanceLabelEq.Size = new System.Drawing.Size(150, 31);
-            this.BalanceLabelEq.TabIndex = 100;
-            this.BalanceLabelEq.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BalanceLabelUSD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BalanceLabelUSD.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BalanceLabelUSD.Location = new System.Drawing.Point(6, 49);
+            this.BalanceLabelUSD.Name = "BalanceLabelUSD";
+            this.BalanceLabelUSD.Size = new System.Drawing.Size(149, 31);
+            this.BalanceLabelUSD.TabIndex = 100;
+            this.BalanceLabelUSD.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.BalanceLabel);
-            this.groupBox3.Controls.Add(this.BalanceLabelEq);
+            this.groupBox3.Controls.Add(this.BalanceLabelLBP);
+            this.groupBox3.Controls.Add(this.BalanceLabelUSD);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox3.Location = new System.Drawing.Point(0, 398);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(172, 89);
             this.groupBox3.TabIndex = 101;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "BalanceLBP";
+            this.groupBox3.Text = "Balance";
             // 
-            // BalanceLabel
+            // BalanceLabelLBP
             // 
-            this.BalanceLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BalanceLabel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BalanceLabel.Location = new System.Drawing.Point(5, 16);
-            this.BalanceLabel.Name = "BalanceLabel";
-            this.BalanceLabel.Size = new System.Drawing.Size(150, 31);
-            this.BalanceLabel.TabIndex = 101;
-            this.BalanceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BalanceLabelLBP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BalanceLabelLBP.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BalanceLabelLBP.Location = new System.Drawing.Point(5, 16);
+            this.BalanceLabelLBP.Name = "BalanceLabelLBP";
+            this.BalanceLabelLBP.Size = new System.Drawing.Size(150, 31);
+            this.BalanceLabelLBP.TabIndex = 101;
+            this.BalanceLabelLBP.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Form1
             // 
@@ -361,9 +361,9 @@
             this.PerformLayout();
         }
 
-        private System.Windows.Forms.Label BalanceLabel;
+        private System.Windows.Forms.Label BalanceLabelLBP;
 
-        private System.Windows.Forms.Label BalanceLabelEq;
+        private System.Windows.Forms.Label BalanceLabelUSD;
 
 
         private System.Windows.Forms.GroupBox groupBox3;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using static HelperLibrary.CurrencyEnum;
 
 namespace HelperLibrary
 {
@@ -7,39 +8,54 @@ namespace HelperLibrary
     {
         public IEnumerable<CurrencyEnum> Currencies => typeof(CurrencyEnum).GetEnumValues().Cast<CurrencyEnum>();
 
-        internal static readonly Dictionary<CurrencyEnum, Cash> CashDict = new Dictionary<CurrencyEnum, Cash>();
+        private Dictionary<CurrencyEnum, Cash> CashDict { get; set; } // = new Dictionary<CurrencyEnum, Cash>();
         // public readonly List<decimal> CashesAmount = new List<decimal>(); // = CashDict.Aggregate(amt, values) => amt + values.Value;
 
-        public decimal CashLBPAmount => CashDict.TryGetValue(CurrencyEnum.LBP, out _cashLBP) ? _cashLBP.Amount : 0;
-        public decimal CashUSDAmount => CashDict.TryGetValue(CurrencyEnum.USD, out _cashUSD) ? _cashUSD.Amount : 0;
-        private Cash _cashLBP = new Cash(CurrencyEnum.LBP, 0); //  { get; set; }
+        private const string USDStrFormat = @"{0:N2}";
+        private const string LBPStrFormat = @"{0:N0}";
+        public string CashLBPAmountString => string.Format(LBPStrFormat,CashLBPAmount) + @" " + LBP;
+        public string CashUSDAmountString => string.Format(USDStrFormat,CashUSDAmount) + @" " + USD;
 
-        private Cash _cashUSD = new Cash(CurrencyEnum.USD, 0); // { get; set; }
+
+        private decimal CashLBPAmount => CashDict.TryGetValue(LBP, out _cashLBP) ? _cashLBP.Amount : 0;
+        private decimal CashUSDAmount => CashDict.TryGetValue(USD, out _cashUSD) ? _cashUSD.Amount : 0;
+        private Cash _cashLBP; 
+
+        private Cash _cashUSD; 
         
         public Cashes()
         {
+            CashDict = new Dictionary<CurrencyEnum, Cash>();
             // foreach (CurrencyEnum currency in Currencies)
             // {
             //     CashDict[currency] = new Cash(currency, 0);
             // }
         }
 
-        public static void Add(Cash a)
+        public void Add(Cashes cashes)
         {
-            if (CashDict.ContainsKey(a.CurrEnum))
+            foreach (var cash in cashes.CashDict.Values)
             {
-                var newCash = new Cash(a.CurrEnum,
-                    a.QtyHundred + CashDict[a.CurrEnum].QtyHundred,
-                    a.QtyFifty + CashDict[a.CurrEnum].QtyFifty,
-                    a.QtyTwenty + CashDict[a.CurrEnum].QtyTwenty,
-                    a.QtyTen + CashDict[a.CurrEnum].QtyTen,
-                    a.QtyFive + CashDict[a.CurrEnum].QtyFive,
-                    a.QtyOne + CashDict[a.CurrEnum].QtyOne);
-                CashDict[a.CurrEnum] = newCash;
+                Add(cash);
+            }
+        }
+
+        public void Add(Cash cashA)
+        {
+            if (CashDict.ContainsKey(cashA.CurrEnum))
+            {
+                var newCash = new Cash(cashA.CurrEnum,
+                    cashA.QtyHundred + CashDict[cashA.CurrEnum].QtyHundred,
+                    cashA.QtyFifty + CashDict[cashA.CurrEnum].QtyFifty,
+                    cashA.QtyTwenty + CashDict[cashA.CurrEnum].QtyTwenty,
+                    cashA.QtyTen + CashDict[cashA.CurrEnum].QtyTen,
+                    cashA.QtyFive + CashDict[cashA.CurrEnum].QtyFive,
+                    cashA.QtyOne + CashDict[cashA.CurrEnum].QtyOne);
+                CashDict[cashA.CurrEnum] = newCash;
             }
             else
             {
-                CashDict[a.CurrEnum] = a; 
+                CashDict[cashA.CurrEnum] = cashA; 
             }
         }
 
@@ -47,9 +63,9 @@ namespace HelperLibrary
         {
             var output = CashDict.Aggregate(string.Empty, (current, keyValuePair) => current + keyValuePair.Value);
             output += "\nTOTAL: ";
-            output += $"{CashLBPAmount:N0} LBP";
+            output += CashLBPAmountString; 
             output += " - ";
-            output += $"{CashUSDAmount:N2} USD";
+            output += CashUSDAmountString; 
             return output;
         }
     }

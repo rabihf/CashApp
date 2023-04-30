@@ -8,9 +8,9 @@ namespace DesktopApp
 {
     public partial class Form1 : Form
     {
-        private Cash MyCash { get; set; } // = new Cash();
+        private Cash MyCash => new Cash(CurrentCurrency, Amount); 
 
-        private static Cashes MyCashes { get; set; } = new Cashes();
+        private static Cashes MyCashes { get; set; }
 
         private decimal Amount => numericUpDown100.Value * decimal.Parse(button100.Text.Trim(',')) +
                                   numericUpDown50.Value * decimal.Parse(button50.Text.Trim(',')) +
@@ -18,9 +18,6 @@ namespace DesktopApp
                                   numericUpDown10.Value * decimal.Parse(button10.Text.Trim(',')) +
                                   numericUpDown5.Value * decimal.Parse(button5.Text.Trim(',')) +
                                   numericUpDown1.Value * decimal.Parse(button1.Text.Trim(','));
-
-        private static decimal BalanceLBP => MyCashes.CashLBPAmount;
-        private static decimal BalanceUSD => MyCashes.CashUSDAmount;
 
         private decimal USDRate =>
             decimal.TryParse(USDRateTextBox.Text, out _)
@@ -32,14 +29,16 @@ namespace DesktopApp
         private readonly Array _currencyEnums = typeof(CurrencyEnum).GetEnumValues();
         private CurrencyEnum CurrentCurrency => (CurrencyEnum)CurrencyComboBox.SelectedItem;
 
-        public Form1(Cash cash)
+        public Form1(Cashes cashes)
         {
             InitializeComponent();
-            MyCash = cash;
+            MyCashes = cashes;
             SetupAmountLabel();
             SetupCurrencyComboBox();
             SetupButtonsLabel();
             USDRateTextBox.Text = string.Format(LBPStrFormat, DefaultUSDRate);
+            BalanceLabelLBP.Text = MyCashes.CashLBPAmountString;
+            BalanceLabelUSD.Text = MyCashes.CashUSDAmountString;
         }
 
         private void SetupButtonsLabel()
@@ -129,23 +128,24 @@ namespace DesktopApp
 
         private void UpdateAmount()
         {
-            //var thisAmount = MyCashes.CashDict[CurrencyEnum.LBP].Amount;
             if (CurrencyComboBox.Text != DefaultCurrency.ToString())
             {
                 AmountLabel.Text = string.Format(USDStrFormat, Amount) + @" " + CurrencyString;
                 AmountLabelEq.Visible = true;
                 AmountLabelEq.Text = string.Format(LBPStrFormat, Amount * USDRate) + @" " + DefaultCurrency;
-                BalanceLabel.Text = string.Format(USDStrFormat, BalanceLBP) + @" " + CurrencyString;
-                BalanceLabelEq.Visible = true;
-                BalanceLabelEq.Text = string.Format(LBPStrFormat, BalanceUSD) + @" " + DefaultCurrency;
             }
             else
             {
                 AmountLabel.Text = string.Format(LBPStrFormat, Amount) + @" " + CurrencyString;
                 AmountLabelEq.Visible = false;
-                BalanceLabel.Text = string.Format(LBPStrFormat, BalanceLBP) + @" " + CurrencyString;
-                BalanceLabelEq.Visible = true;
             }
+        }
+
+        private void UpdateBalance()
+        {
+            BalanceLabelLBP.Text = MyCashes.CashLBPAmountString; 
+            BalanceLabelUSD.Text = MyCashes.CashUSDAmountString; 
+
         }
 
         private void numericUpDown20_ValueChanged(object sender, EventArgs e)
@@ -176,6 +176,11 @@ namespace DesktopApp
 
         private void BtnReset_Click(object sender, EventArgs e)
         {
+            ResetNums();
+        }
+
+        private void ResetNums()
+        {
             numericUpDown100.Text = @"0";
             numericUpDown50.Text = @"0";
             numericUpDown20.Text = @"0";
@@ -186,37 +191,15 @@ namespace DesktopApp
 
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            // Form add = new Form1();
-            // add.Text = @"New Form";
-            // add.StartPosition = FormStartPosition.Manual;// (StartPosition == FormStartPosition.Manual) + new Point(Width, 0);
-            // add.Location = Location + new Size(Width, 0);
-            //
-            // add.Show();
-            // // add.ShowDialog(this);
-            // using (Form form = new Form1())
-            // {
-            //     form.ShowDialog(this);
-            // } 
-            Form1 form1 = new Form1(new Cash());
-            // MyCash = new Cash(CurrentCurrency, Amount);
-            // MyCashes.Add(MyCash);
-            form1.ShowDialog();
-            UpdateAmount();
+            MyCashes.Add(MyCash);
+            ResetNums();
+            UpdateBalance();
         }
 
         private void buttonEqual_Click(object sender, EventArgs e)
         {
-            // Form1 form1 = new Form1();
-            // DialogResult dialogResult; // = ShowDialog();
-            // form1.ShowDialog() == DialogResult.OK
-            if (DialogResult == DialogResult.OK)
-            {
-                // MyCashes = new Cashes();
-                MyCashes = MyCash + new Cash(CurrentCurrency, Amount);
-                // MyCashes.Add(MyCash);
-                MessageBox.Show(MyCashes.ToString(), @"ttt", MessageBoxButtons.OK);
-                UpdateAmount();
-            }
+                MessageBox.Show(MyCashes.ToString(), @"Cashes List", MessageBoxButtons.OK);
+                ResetNums();
         }
     }
 }
