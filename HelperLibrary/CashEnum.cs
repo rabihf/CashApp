@@ -26,7 +26,7 @@ namespace HelperLibrary
     }
     public enum CurrencyEnum
     {
-        [Description("USD")] USD = 110_000,
+        [Description("USD")] USD = 97_000,
         [Description("LBP")] LBP = 1
     }
 

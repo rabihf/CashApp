@@ -55,6 +55,7 @@
             this.BalanceLabelUSD = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.BalanceLabelLBP = new System.Windows.Forms.Label();
+            this.buttonSub = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown100)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown50)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
@@ -233,21 +234,18 @@
             // groupBox1
             // 
             this.groupBox1.AutoSize = true;
-            this.groupBox1.Controls.Add(this.buttonEqual);
-            this.groupBox1.Controls.Add(this.ButtonAdd);
             this.groupBox1.Controls.Add(this.USDRateTextBox);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(172, 82);
+            this.groupBox1.Size = new System.Drawing.Size(143, 82);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             // 
             // buttonEqual
             // 
             this.buttonEqual.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonEqual.Location = new System.Drawing.Point(134, 40);
+            this.buttonEqual.Location = new System.Drawing.Point(149, 59);
             this.buttonEqual.Name = "buttonEqual";
             this.buttonEqual.Size = new System.Drawing.Size(23, 23);
             this.buttonEqual.TabIndex = 13;
@@ -257,7 +255,7 @@
             // 
             // ButtonAdd
             // 
-            this.ButtonAdd.Location = new System.Drawing.Point(134, 10);
+            this.ButtonAdd.Location = new System.Drawing.Point(149, 4);
             this.ButtonAdd.Name = "ButtonAdd";
             this.ButtonAdd.Size = new System.Drawing.Size(23, 23);
             this.ButtonAdd.TabIndex = 13;
@@ -284,7 +282,6 @@
             this.groupBox2.Controls.Add(this.button50);
             this.groupBox2.Controls.Add(this.button100);
             this.groupBox2.Controls.Add(this.AmountLabel);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox2.Location = new System.Drawing.Point(0, 82);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(172, 309);
@@ -318,7 +315,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox3.Location = new System.Drawing.Point(0, 398);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(172, 89);
+            this.groupBox3.Size = new System.Drawing.Size(192, 89);
             this.groupBox3.TabIndex = 101;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Balance";
@@ -333,17 +330,28 @@
             this.BalanceLabelLBP.TabIndex = 101;
             this.BalanceLabelLBP.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // buttonSub
+            // 
+            this.buttonSub.Location = new System.Drawing.Point(149, 33);
+            this.buttonSub.Name = "buttonSub";
+            this.buttonSub.Size = new System.Drawing.Size(23, 23);
+            this.buttonSub.TabIndex = 13;
+            this.buttonSub.Text = "-";
+            this.buttonSub.UseVisualStyleBackColor = true;
+            this.buttonSub.Click += new System.EventHandler(this.buttonSub_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(172, 487);
+            this.ClientSize = new System.Drawing.Size(192, 487);
+            this.Controls.Add(this.buttonEqual);
             this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.buttonSub);
+            this.Controls.Add(this.ButtonAdd);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.MaximumSize = new System.Drawing.Size(178, 516);
-            this.MinimumSize = new System.Drawing.Size(178, 516);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bills Counter & Exchange";
@@ -360,6 +368,8 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button buttonSub;
 
         private System.Windows.Forms.Label BalanceLabelLBP;
 

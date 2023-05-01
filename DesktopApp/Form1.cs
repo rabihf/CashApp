@@ -8,7 +8,7 @@ namespace DesktopApp
 {
     public partial class Form1 : Form
     {
-        private Cash MyCash => new Cash(CurrentCurrency, Amount); 
+        private Cash MyCash => new Cash(CurrentCurrency, Amount);
 
         private static Cashes MyCashes { get; set; }
 
@@ -22,9 +22,9 @@ namespace DesktopApp
         private decimal USDRate =>
             decimal.TryParse(USDRateTextBox.Text, out _)
                 ? decimal.Parse(USDRateTextBox.Text)
-                : DefaultUSDRate; // 110_000;
+                : DefaultUSDRate;
 
-        private const decimal DefaultUSDRate = 110_000;
+        private const decimal DefaultUSDRate = (int)CurrencyEnum.USD;
         private string CurrencyString => CurrencyComboBox.Text;
         private readonly Array _currencyEnums = typeof(CurrencyEnum).GetEnumValues();
         private CurrencyEnum CurrentCurrency => (CurrencyEnum)CurrencyComboBox.SelectedItem;
@@ -143,9 +143,8 @@ namespace DesktopApp
 
         private void UpdateBalance()
         {
-            BalanceLabelLBP.Text = MyCashes.CashLBPAmountString; 
-            BalanceLabelUSD.Text = MyCashes.CashUSDAmountString; 
-
+            BalanceLabelLBP.Text = MyCashes.CashLBPAmountString;
+            BalanceLabelUSD.Text = MyCashes.CashUSDAmountString;
         }
 
         private void numericUpDown20_ValueChanged(object sender, EventArgs e)
@@ -198,8 +197,25 @@ namespace DesktopApp
 
         private void buttonEqual_Click(object sender, EventArgs e)
         {
-                MessageBox.Show(MyCashes.ToString(), @"Cashes List", MessageBoxButtons.OK);
+            MessageBox.Show(MyCashes.ToString(), @"Cashes List", MessageBoxButtons.OK);
+            ResetNums();
+        }
+
+        private void buttonSub_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MyCashes.Subtract(MyCash);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"Subtraction Error", MessageBoxButtons.OK);
+            }
+            finally
+            {
                 ResetNums();
+                UpdateBalance();
+            }
         }
     }
 }
