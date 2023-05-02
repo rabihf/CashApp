@@ -39,6 +39,7 @@ namespace DesktopApp
             USDRateTextBox.Text = string.Format(LBPStrFormat, DefaultUSDRate);
             BalanceLabelLBP.Text = MyCashes.CashLBPAmountString;
             BalanceLabelUSD.Text = MyCashes.CashUSDAmountString;
+            Width = MinimumSize.Width + 10;
         }
 
         private void SetupButtonsLabel()
@@ -144,7 +145,26 @@ namespace DesktopApp
         private void UpdateBalance()
         {
             BalanceLabelLBP.Text = MyCashes.CashLBPAmountString;
+            if (MyCashes.CashLBP != null)
+            {
+                sp1p2_100.Text = MyCashes.CashLBP.QtyHundred.ToString();
+                sp1p2_50.Text = MyCashes.CashLBP.QtyFifty.ToString();
+                sp1p2_20.Text = MyCashes.CashLBP.QtyTwenty.ToString();
+                sp1p2_10.Text = MyCashes.CashLBP.QtyTen.ToString();
+                sp1p2_5.Text = MyCashes.CashLBP.QtyFive.ToString();
+                sp1p2_1.Text = MyCashes.CashLBP.QtyOne.ToString();
+            }
+
             BalanceLabelUSD.Text = MyCashes.CashUSDAmountString;
+            if (MyCashes.CashUSD != null)
+            {
+                sp2p2_100.Text = MyCashes.CashUSD.QtyHundred.ToString();
+                sp2p2_50.Text = MyCashes.CashUSD.QtyFifty.ToString();
+                sp2p2_20.Text = MyCashes.CashUSD.QtyTwenty.ToString();
+                sp2p2_10.Text = MyCashes.CashUSD.QtyTen.ToString();
+                sp2p2_5.Text = MyCashes.CashUSD.QtyFive.ToString();
+                sp2p2_1.Text = MyCashes.CashUSD.QtyOne.ToString();
+            }
         }
 
         private void numericUpDown20_ValueChanged(object sender, EventArgs e)
@@ -195,12 +215,6 @@ namespace DesktopApp
             UpdateBalance();
         }
 
-        private void buttonEqual_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(MyCashes.ToString(), @"Cashes List", MessageBoxButtons.OK);
-            ResetNums();
-        }
-
         private void buttonSub_Click(object sender, EventArgs e)
         {
             try
@@ -215,6 +229,26 @@ namespace DesktopApp
             {
                 ResetNums();
                 UpdateBalance();
+            }
+        }
+
+
+        private void buttonShowHide_Click(object sender, EventArgs e)
+        {
+            switch (splitContainer1.Panel2.Visible)
+            {
+                case true:
+                    buttonShowHide.Text = @">";
+                    splitContainer1.Panel2.Hide();
+                    splitContainer2.Panel2.Hide();
+                    Width = MinimumSize.Width + 10 ;// 196;
+                    break;
+                case false:
+                    buttonShowHide.Text = @"<";
+                    splitContainer1.Panel2.Show();
+                    splitContainer2.Panel2.Show();
+                    Width = MaximumSize.Width; // 600;
+                    break;
             }
         }
     }

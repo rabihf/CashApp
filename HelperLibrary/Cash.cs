@@ -34,12 +34,12 @@ namespace HelperLibrary
             }
         }
 
-        internal int QtyHundred { get; set; }
-        internal int QtyFifty { get; set; }
-        internal int QtyTwenty { get; set; }
-        internal int QtyTen { get; set; }
-        internal int QtyFive { get; set; }
-        internal int QtyOne { get; set; }
+        public int QtyHundred { get; private set; }
+        public int QtyFifty { get; private set; }
+        public int QtyTwenty { get; private set; }
+        public int QtyTen { get; private set; }
+        public int QtyFive { get; private set; }
+        public int QtyOne { get; private set; }
 
         private string CurrencyStr => CurrEnum.ToString();
 

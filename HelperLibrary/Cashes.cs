@@ -17,11 +17,11 @@ namespace HelperLibrary
         public string CashUSDAmountString => string.Format(USDStrFormat, CashUSDAmount) + @" " + USD;
 
 
-        private decimal CashLBPAmount => CashDict.TryGetValue(LBP, out _cashLBP) ? _cashLBP.Amount : 0;
-        private decimal CashUSDAmount => CashDict.TryGetValue(USD, out _cashUSD) ? _cashUSD.Amount : 0;
-        private Cash _cashLBP;
+        private decimal CashLBPAmount => CashDict.TryGetValue(LBP, out CashLBP) ? CashLBP.Amount : 0;
+        private decimal CashUSDAmount => CashDict.TryGetValue(USD, out CashUSD) ? CashUSD.Amount : 0;
+        public Cash CashLBP;
 
-        private Cash _cashUSD;
+        public Cash CashUSD;
 
         public Cashes()
         {
