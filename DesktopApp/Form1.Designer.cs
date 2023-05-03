@@ -173,49 +173,61 @@
             // numericUpDown100
             // 
             this.numericUpDown100.Location = new System.Drawing.Point(114, 56);
+            this.numericUpDown100.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             this.numericUpDown100.Name = "numericUpDown100";
             this.numericUpDown100.Size = new System.Drawing.Size(43, 20);
             this.numericUpDown100.TabIndex = 8;
+            this.numericUpDown100.ThousandsSeparator = true;
             this.numericUpDown100.ValueChanged += new System.EventHandler(this.numericUpDown100_ValueChanged);
             // 
             // numericUpDown50
             // 
             this.numericUpDown50.Location = new System.Drawing.Point(114, 85);
+            this.numericUpDown50.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             this.numericUpDown50.Name = "numericUpDown50";
             this.numericUpDown50.Size = new System.Drawing.Size(43, 20);
             this.numericUpDown50.TabIndex = 9;
+            this.numericUpDown50.ThousandsSeparator = true;
             this.numericUpDown50.ValueChanged += new System.EventHandler(this.numericUpDown50_ValueChanged);
             // 
             // numericUpDown20
             // 
             this.numericUpDown20.Location = new System.Drawing.Point(114, 114);
+            this.numericUpDown20.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             this.numericUpDown20.Name = "numericUpDown20";
             this.numericUpDown20.Size = new System.Drawing.Size(43, 20);
             this.numericUpDown20.TabIndex = 10;
+            this.numericUpDown20.ThousandsSeparator = true;
             this.numericUpDown20.ValueChanged += new System.EventHandler(this.numericUpDown20_ValueChanged);
             // 
             // numericUpDown10
             // 
             this.numericUpDown10.Location = new System.Drawing.Point(114, 143);
+            this.numericUpDown10.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             this.numericUpDown10.Name = "numericUpDown10";
             this.numericUpDown10.Size = new System.Drawing.Size(43, 20);
             this.numericUpDown10.TabIndex = 11;
+            this.numericUpDown10.ThousandsSeparator = true;
             this.numericUpDown10.ValueChanged += new System.EventHandler(this.numericUpDown10_ValueChanged);
             // 
             // numericUpDown5
             // 
             this.numericUpDown5.Location = new System.Drawing.Point(114, 172);
+            this.numericUpDown5.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             this.numericUpDown5.Name = "numericUpDown5";
             this.numericUpDown5.Size = new System.Drawing.Size(43, 20);
             this.numericUpDown5.TabIndex = 12;
+            this.numericUpDown5.ThousandsSeparator = true;
             this.numericUpDown5.ValueChanged += new System.EventHandler(this.numericUpDown5_ValueChanged);
             // 
             // numericUpDown1
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(114, 201);
+            this.numericUpDown1.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(43, 20);
             this.numericUpDown1.TabIndex = 13;
+            this.numericUpDown1.ThousandsSeparator = true;
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // CurrencyComboBox
