@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using static HelperLibrary.CurrencyEnum;
@@ -55,19 +54,16 @@ namespace HelperLibrary
             QtyFive = qtyFive;
             QtyOne = qtyOne;
             CurrEnum = currencyEnum;
-            // CashesDict = new Cashes();
         }
 
         public Cash()
         {
             CurrEnum = DefaultCurrency;
-            // CashesDict = new Cashes();
         }
 
         public Cash(CurrencyEnum currEnum, decimal amount)
         {
             CurrEnum = currEnum;
-            // ExchangeRate = (decimal)currEnum;
             IEnumerable<int> bills = CurrEnum == LBP ? BillsLBP.ToList() : BillsUSD.ToList();
             QtyHundred = (int)(amount / bills.ElementAt(0));
             amount = (int)(amount % bills.ElementAt(0));
@@ -80,10 +76,7 @@ namespace HelperLibrary
             QtyFive = (int)(amount / bills.ElementAt(4));
             amount = (int)(amount % bills.ElementAt(4));
             QtyOne = (int)(amount / bills.ElementAt(5));
-            // CashesDict = new Cashes();
         }
-
-        // private static Cashes CashesDict { get; set; }
 
         public override string ToString()
         {
@@ -107,45 +100,32 @@ namespace HelperLibrary
             return output;
         }
 
-        public static Cashes operator +(Cash a, decimal b) // overloading
+        public static Cash operator +(Cash a, decimal b) // overloading
         {
             return a + new Cash(a.CurrEnum, b);
         }
 
-        public static Cashes operator +(Cash a, Cash b) // overloading
+        public static Cash operator +(Cash a, Cash b) // overloading
         {
-            var cashes = new Cashes();
+            Cash cash;
             if (a.CurrEnum == b.CurrEnum)
             {
-                Console.WriteLine("Same Currency Adding bills");
-                var cash = new Cash(a.CurrEnum,
+                cash = new Cash(a.CurrEnum,
                     a.QtyHundred + b.QtyHundred,
                     a.QtyFifty + b.QtyFifty,
                     a.QtyTwenty + b.QtyTwenty,
                     a.QtyTen + b.QtyTen,
                     a.QtyFive + b.QtyFive,
                     a.QtyOne + b.QtyOne);
-                cashes.Add(cash);
             }
             else
             {
                 Console.WriteLine("Different Currency");
-                cashes.Add(a);
-                cashes.Add(b);
+                throw new Exception("Using different Currencies");
             }
-            return cashes;
-        }
 
-        // public void Add(Cash a, Cash b)
-        // {
-        //     var cash = new Cash(a.CurrEnum,
-        //         a.QtyHundred + b.QtyHundred,
-        //         a.QtyFifty + b.QtyFifty,
-        //         a.QtyTwenty + b.QtyTwenty,
-        //         a.QtyTen + b.QtyTen,
-        //         a.QtyFive + b.QtyFive,
-        //         a.QtyOne + b.QtyOne);
-        // }
+            return cash;
+        }
 
         public static Cashes operator -(Cash a, decimal b) // overloading
         {
@@ -173,11 +153,9 @@ namespace HelperLibrary
                     : new Cash(LBP, cashBConverted.Amount - cashAConverted.Amount);
                 cashes.Add(newCash);
             }
+
             return cashes;
         }
-
-        
-
 
 
         /// <summary>
