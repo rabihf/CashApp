@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using HelperLibrary;
@@ -8,7 +9,13 @@ namespace DesktopApp
 {
     public partial class Form1 : Form
     {
-        private Cash MyCash => new Cash(CurrentCurrency, Amount);
+        private Cash MyCash => new Cash(CurrentCurrency,
+            (int)numericUpDown100.Value,
+            (int)numericUpDown50.Value,
+            (int)numericUpDown20.Value,
+            (int)numericUpDown10.Value,
+            (int)numericUpDown5.Value,
+            (int)numericUpDown1.Value);
 
         private static Cashes MyCashes { get; set; }
 
@@ -40,6 +47,12 @@ namespace DesktopApp
             BalanceLabelLBP.Text = MyCashes.CashLBPAmountString;
             BalanceLabelUSD.Text = MyCashes.CashUSDAmountString;
             Width = MinimumSize.Width + 10;
+        }
+
+        public sealed override Size MinimumSize
+        {
+            get => base.MinimumSize;
+            set => base.MinimumSize = value;
         }
 
         private void SetupButtonsLabel()
@@ -220,6 +233,11 @@ namespace DesktopApp
             try
             {
                 MyCashes.Subtract(MyCash);
+            }
+            catch (Cashes.CashesException ex)
+            {
+                MessageBox.Show(ex.Message, @"Subtraction Error", MessageBoxButtons.OK);
+
             }
             catch (Exception ex)
             {

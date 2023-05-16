@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using HelperLibrary;
-using static HelperLibrary.Cash;
 using static HelperLibrary.CurrencyEnum;
 
 namespace ConsoleApp
@@ -20,36 +15,39 @@ namespace ConsoleApp
         {
             var cashes = new Cashes();
             var cashUSD = new Cash(USD, 0, 0, 2, 12, 1, 3);
-            //var cashLBP = new Cash(LBP, 212, 1, 0, 0, 0, 0);
-            // Console.WriteLine($"cashUSD: {cashUSD}\n");
-            // Console.WriteLine($"cashLBP: {cashLBP}\n");
-            //cashes.Add(cashLBP);
-            //cashes.Add(cashLBP);
-            // cashes.Add(new Cash(LBP, 1_850_000));
+            Console.WriteLine($"cashUSD: {cashUSD}\n");
             cashes.Add(cashUSD);
-            // cashes.Add(new Cash(USD, 32));
-            // cashes.Add(new Cash(LBP, 1, 0, 0, 0, 0, 0));
-            //var cashes = cashUSD + cashLBP;
-            //cashes.Add(cashLBP + cashUSD);
-            // var sum = cashLBP + cashUSD;
-            // cashes.Add(sum);
-            Console.WriteLine(cashes);
-            cashes.Subtract(new Cash(USD, 150));
-            Console.WriteLine(cashes);
-            
+            var cashA = new Cash(USD, 0,0,1,13,1,3);
+            Console.WriteLine($"cashA: {cashA}");
+
+            TestSubtract(cashes, cashA);
+
 
             
-            
-            
-            
-            
-            
-            
-            // Console.WriteLine(cashes);
 
-            
 
             Console.WriteLine();
+        }
+
+        private static void TestSubtract(Cashes cashes, Cash cashA)
+        {
+            try
+            {
+                cashes.Subtract(cashA);
+            }
+            catch (Cashes.CashesException ce)
+            {
+                Console.WriteLine(ce.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                Console.WriteLine(cashes);
+            }
         }
     }
 }

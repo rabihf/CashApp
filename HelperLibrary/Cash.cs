@@ -33,12 +33,12 @@ namespace HelperLibrary
             }
         }
 
-        public int QtyHundred { get; private set; }
-        public int QtyFifty { get; private set; }
-        public int QtyTwenty { get; private set; }
-        public int QtyTen { get; private set; }
-        public int QtyFive { get; private set; }
-        public int QtyOne { get; private set; }
+        public int QtyHundred { get; internal set; }
+        public int QtyFifty { get; internal set; }
+        public int QtyTwenty { get; internal set; }
+        public int QtyTen { get; internal set; }
+        public int QtyFive { get; internal set; }
+        public int QtyOne { get; internal set; }
 
         private string CurrencyStr => CurrEnum.ToString();
 
@@ -80,7 +80,6 @@ namespace HelperLibrary
 
         public override string ToString()
         {
-            // TODO: must beautify the output
             string output = string.Empty;
             output += $"\nCurrency: {CurrencyStr} - ";
             var amount = Amount;

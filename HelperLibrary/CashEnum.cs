@@ -2,10 +2,6 @@
 
 namespace HelperLibrary
 {
-    public enum CashEnum
-    {
-        
-    }
     public enum CashLBPEnum
     {
         HundredThousand = 100_000,
